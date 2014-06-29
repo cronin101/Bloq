@@ -10,6 +10,9 @@ class PlayerController(object):
         elif symbol == 115: self.game.walk(forward=False) # S
         elif symbol == 97: self.game.strafe(right=False)  # A
         elif symbol == 100: self.game.strafe(right=True)  # D
+        elif symbol == 32: self.game.jump()               # Space
+        else:
+            print(symbol)
 
     def handle_mouse_movement(self, dx, dy):
         scale = 0.1

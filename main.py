@@ -7,7 +7,7 @@ from player_controller import PlayerController
 
 
 if __name__ == "__main__":
-    window = pl.window.Window()#fullscreen=True)
+    window = pl.window.Window(fullscreen=True)
     game = GameContext()
     game.engine = GameEngine(game, window)
 
@@ -27,6 +27,7 @@ if __name__ == "__main__":
         else:
             game.engine.orient()
             game.engine.draw()
+
 
     @window.event
     def on_mouse_motion(x, y, dx, dy):

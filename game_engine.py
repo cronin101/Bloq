@@ -4,7 +4,28 @@ from pyglet.gl import *
 from itertools import chain
 
 
+length = 24.0
+
+wall_y = list(chain.from_iterable(
+    [-length, float(y), 0.0, length, float(y), 0.0] for y in xrange(int(length))))
+
+wall_x = list(chain.from_iterable(
+    [float(x - length), 0, 0.0, float(x - length), length, 0.0] for x in xrange(2 * int(length))))
+
+floor_y = list(chain.from_iterable(
+    [float(x - length), 0.0, 0.0, float(x - length), 0.0, length] for x in xrange(2 * int(length))))
+
+floor_x = list(chain.from_iterable(
+    [length, 0.0, float(x), -length, 0.0, float(x)] for x in xrange(int(length))))
+
+colors = [  1.0,0.0,0.0, 1.0,0.0,0.0, \
+            0.0,1.0,0.0, 0.0,1.0,0.0, \
+            0.0,0.0,1.0, 0.0,0.0,1.0  ]
+
+vset = wall_y + wall_x  + floor_y + floor_x
+
 class GameEngine(object):
+
     def __init__(self, game, window):
         self.game = game
         self.window = window
@@ -33,25 +54,6 @@ class GameEngine(object):
         self.window.clear()
         glColor3d(1, 1, 1)
         '''Draw Axes'''
-        length = 24.0
-        wall_y = list(chain.from_iterable(
-            [-length, float(y), 0.0, length, float(y), 0.0] for y in xrange(int(length))))
-
-        wall_x = list(chain.from_iterable(
-            [float(x - length), 0, 0.0, float(x - length), length, 0.0] for x in xrange(2 * int(length))))
-
-        floor_y = list(chain.from_iterable(
-            [float(x - length), 0.0, 0.0, float(x - length), 0.0, length] for x in xrange(2 * int(length))))
-
-        floor_x = list(chain.from_iterable(
-            [length, 0.0, float(x), -length, 0.0, float(x)] for x in xrange(int(length))))
-
-        colors = [  1.0,0.0,0.0, 1.0,0.0,0.0, \
-                    0.0,1.0,0.0, 0.0,1.0,0.0, \
-                    0.0,0.0,1.0, 0.0,0.0,1.0  ]
-
-        vset = wall_y + wall_x  + floor_y + floor_x
-
         self.batch.add(len(vset) // 3, GL_LINES, None,
             ('v3f/static', vset))
             #('c3f/static', (colors[0] * 10) + (colors[1] * 10) + colors[2]))
