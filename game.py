@@ -12,29 +12,33 @@ class GameContext(object):
         self.has_started = True
 
     def walk(self, forward=True):
-        self.slide()
         direction = 1 if forward else -1
+
         x, y, z = self.loc.position
         dx, dy, dz = self.__directed_walk(direction)
         self.loc.position = [x + dx, y + dy, z + dz]
-        self.loc.velocity = [dx, dy, dz]
+
+        ox, oy, oz = self.loc.velocity
+        self.loc.velocity = [ox + dx, oy + dy, oz + dz]
 
     def strafe(self, right=True):
-        self.slide()
         direction = -1 if right else 1
+
         x, y, z = self.loc.position
         dz, dy, dx = self.__directed_walk(direction)
-        self.loc.position = [x + 2*dx, y + dy, z - 2*dz]
-        #self.loc.velocity = [dx, dy, -dz]
+        self.loc.position = [x + dx, y + dy, z - dz]
+
+        ox, oy, oz = self.loc.velocity
+        self.loc.velocity = [ox + dx, oy + dy, oz - dz]
 
     def slide(self):
         x, y, z = self.loc.position
         dx, dy, dz = self.loc.velocity
         self.loc.position = [x + dx, y + dy, z + dz]
-        dx = self.__shift_towards_zero(dx, 0.05)
+        dx = self.__shift_towards_zero(dx, 0.10)
         if abs(dx) <= 0.001:
             dx = 0
-        dz = self.__shift_towards_zero(dz, 0.05)
+        dz = self.__shift_towards_zero(dz, 0.10)
         if abs(dz) <= 0.001:
             dz = 0
 
@@ -50,7 +54,7 @@ class GameContext(object):
         self.loc.rotation = [x + dx, y]
 
     def __directed_walk(self, direction):
-        scale = 0.10
+        scale = 0.05
         xd, yd = self.loc.rotation
         xr, yr = math.radians(xd), math.radians(yd)
         return scale *  math.sin(xr) * direction, 0, scale * (- math.cos(xr)) * direction

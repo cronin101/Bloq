@@ -6,10 +6,8 @@ from game_engine import GameEngine
 from player_controller import PlayerController
 
 
-changes = False
-
 if __name__ == "__main__":
-    window = pl.window.Window(fullscreen=True)
+    window = pl.window.Window()#fullscreen=True)
     game = GameContext()
     game.engine = GameEngine(game, window)
 
@@ -33,22 +31,18 @@ if __name__ == "__main__":
     @window.event
     def on_mouse_motion(x, y, dx, dy):
         if game.has_started:
-            changes = True
             game.controller.handle_mouse_movement(dx, dy)
 
     def tick(dt):
+        game.slide()
         for key, state in key_handler.iteritems():
             if state:
-                changes = True
                 if not game.has_started:
                     game.controller = PlayerController(game)
                     game.start()
                     window.set_exclusive_mouse(True)
                 else:
                     game.controller.handle_key_input(key, None)
-            else:
-                game.slide()
-                #changes = False
 
     pl.clock.schedule_interval(tick, 1/50.0)
 
